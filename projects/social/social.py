@@ -82,20 +82,16 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
 
-        q = queue.Queue()
+        # q = queue.Queue()
         visited = {}  # Note that this is a dictionary, not a set
-        q.put(userID)
+        # q.put(userID)
         # !!!! IMPLEMENT ME
+        print(self.friendships)
 
-        while not q.empty():
-            current_node = q.get()
+        for i, v in self.friendships.items():
+            if userID in self.friendships[i]:
+                visited[f'friend{i}'] = i
 
-            if current_node not in visited:
-                visited[current_node] = current_node
-                edges = self.friendships[current_node]
-
-                for e in edges:
-                    q.put(e)
 
         return visited
 
@@ -104,5 +100,5 @@ if __name__ == '__main__':
     sg = SocialGraph()
     sg.populateGraph(10, 2)
     print(sg.friendships)
-    connections = sg.getAllSocialPaths(1)
+    connections = sg.getAllSocialPaths(3)
     print(connections)
