@@ -82,16 +82,22 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
 
-        # q = queue.Queue()
+        q = queue.Queue()
         visited = {}  # Note that this is a dictionary, not a set
-        # q.put(userID)
+        q.put(userID)
         # !!!! IMPLEMENT ME
-        print(self.friendships)
 
-        for i, v in self.friendships.items():
-            if userID in self.friendships[i]:
-                visited[f'friend{i}'] = i
+        while not q.empty():
+            current_node = q.get()
 
+            if current_node not in visited:
+                if userID in self.friendships[current_node]:
+                    visited[current_node] = self.friendships[current_node]
+                edges = self.friendships[current_node]
+
+                for e in edges:
+                    if userID in self.friendships[e]:
+                        q.put(e)
 
         return visited
 
