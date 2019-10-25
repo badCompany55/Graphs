@@ -84,20 +84,22 @@ class SocialGraph:
 
         q = queue.Queue()
         visited = {}  # Note that this is a dictionary, not a set
-        q.put(userID)
+        q.put([userID])
         # !!!! IMPLEMENT ME
 
         while not q.empty():
-            current_node = q.get()
+            current_path = q.get()
+            user_or_friend = current_path[-1]
 
-            if current_node not in visited:
-                if userID in self.friendships[current_node]:
-                    visited[current_node] = self.friendships[current_node]
-                edges = self.friendships[current_node]
+            if user_or_friend not in visited:
+                visited[user_or_friend] = current_path
+
+                edges = self.friendships[user_or_friend]
 
                 for e in edges:
-                    if userID in self.friendships[e]:
-                        q.put(e)
+                    path_copy = current_path[:]
+                    path_copy.append(e)
+                    q.put(path_copy)
 
         return visited
 
@@ -106,5 +108,5 @@ if __name__ == '__main__':
     sg = SocialGraph()
     sg.populateGraph(10, 2)
     print(sg.friendships)
-    connections = sg.getAllSocialPaths(3)
+    connections = sg.getAllSocialPaths(1)
     print(connections)
